@@ -1,0 +1,9 @@
+*.swp
+*.swo
+*.bak
+*.tmp
+session.*
+undo/*
+plugin/packer_compiled.lua
+site
+lazy-lock.json
