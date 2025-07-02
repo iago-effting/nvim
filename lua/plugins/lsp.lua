@@ -1,42 +1,36 @@
 return {
-  -- Gerenciador de LSP (apenas Mason sem instalar elixirls diretamente)
+  -- Mason: gerenciador de LSPs
   { "williamboman/mason.nvim", config = true },
 
-  -- Bridge entre mason e lspconfig (facilita setup automático)
+  -- Mason-lspconfig com handler desativado para elixirls
   {
     "williamboman/mason-lspconfig.nvim",
     opts = {
       ensure_installed = { "elixirls" },
+      automatic_installation = true,
+      handlers = {
+        -- Desativa o carregamento automático do elixirls
+        ["elixirls"] = function() end,
+      },
     },
-  },
-
-  -- Configuração manual dos LSPs (inclui :LspInfo e afins)
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("lspconfig") -- garante comandos como :LspInfo
-    end,
   },
 
   -- Integração moderna com Elixir
   {
     "elixir-tools/elixir-tools.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      require("lspconfig").elixirls.setup({}) -- sobrescreve e impede conflito
-
       require("elixir").setup({
         elixirls = {
           enable = true,
           elixirLS = {
-            enableTestLenses = false,
+            enableTestLenses = true,
             suggestSpecs = false,
             fetchDeps = false,
-            dialyzerEnabled = false,
+            dialyzerEnabled = true,
           },
-          on_attach = function(client, bufnr)
-            -- Desabilita semantic tokens se estiver ativo (evita conflitos visuais)
+          on_attach = function(client, _)
             if client.server_capabilities.semanticTokensProvider then
               client.server_capabilities.semanticTokensProvider = nil
             end
@@ -46,7 +40,7 @@ return {
     end,
   },
 
-  -- Treesitter para Elixir/HEEx/EEx
+  -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",

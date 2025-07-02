@@ -14,9 +14,17 @@ vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Abrir/Fechar E
 vim.keymap.set("n", "<leader><leader>", "<cmd>b#<CR>", { desc = "Voltar ao arquivo anterior" })
 
 -- Atalho para saltar para a definição
-vim.keymap.set("n", "<leader>jm", function()
+vim.keymap.set("n", "<C-m>", function()
+  require("utils.goto_module_from_test").from_test_file()
+end, { desc = "Ir do teste para o módulo (Ctrl+M)" })
+
+vim.keymap.set("n", "<C-g>", function()
   require("utils.jump_to_module").from_cursor()
-end, { desc = "Ir para o módulo do cursor" })
+end, { desc = "Ir para o módulo do cursor (Ctrl+O)" })
+
+vim.keymap.set("n", "<C-t>", function()
+  require("utils.jump_to_test").create_test_file_with_skeleton()
+end, { desc = "Criar esqueleto de teste" })
 
 -- Atalho para proximo bloco
 vim.keymap.set("n", "<leader>n", function()
@@ -76,6 +84,10 @@ vim.keymap.set("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", { desc = 
 vim.keymap.set("n", "<leader>dh", function()
   require("dap.ui.widgets").hover()
 end, { desc = "Dap hover (avaliar variável)" })
+
+vim.keymap.set("n", "<leader>ls", function()
+  vim.opt.list = not vim.opt.list:get()
+end, { desc = "Alternar visualização de espaços" })
 
 -- linter
 vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Mostrar erro da linha" })

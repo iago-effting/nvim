@@ -27,6 +27,14 @@ return {
       },
       filters = {
         dotfiles = false,
+        custom = {
+          "^deps$",
+          "^_build$",
+          "^.elixir_ls$",
+          "^.elixir-tools$",
+          "erl_crash.dump",
+          "^.git$"
+        },
       },
     })
   end,
